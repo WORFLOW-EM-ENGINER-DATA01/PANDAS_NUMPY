@@ -1,0 +1,249 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\n",
+    "## Exercice formater/extraire des données\n",
+    "\n",
+    "1. Développez un script permettant de nettoyer le dataset students pour obtenir le tableau sanitize :\n",
+    "\n",
+    "```python\n",
+    "\n",
+    "students = np.array([\n",
+    "    [  \"Name: Luce du Coulon\" , \"phone Number: 201-20-30\"],\n",
+    "    [  \"Name: Auguste Dupont\", \"phone Number: 201-22-30\"],\n",
+    "    [  \"Name: Roger Le Voisi\", \"phone Number: 201-27-30\"],\n",
+    "    [  \"Name: Alexandre Lacri\", \"phone Number: 201-10-30\"],\n",
+    "    [  \"Name: Jacques Humber\", \"phone Number: 201-20-35\"],\n",
+    "    [  \"Name: Thérèse Guille\", \"phone Number: 201-20-38\"],\n",
+    "    [  \"Name: Gilles Gros-Bodin\", \"phone Number: 201-20-39\"],\n",
+    "    [  \"Name: Amélie Pires\", \"phone Number: 201-25-39\"],\n",
+    "    [  \"Name: Marcel Laporte\", \"phone Number: 201-20-39\"],\n",
+    "    [  \"Name: Geneviève Marchal\", \"phone Number: 301-20-39\"]\n",
+    "])\n",
+    "\n",
+    "santize = np.array([\n",
+    "       ['Luce du Coulon', '201-20-30']\n",
+    "       ['Auguste Dupont', '201-22-30']\n",
+    "       ['Roger Le Voisi', '201-27-30']\n",
+    "       ['Alexandre Lacri', '201-10-30']\n",
+    "       ['Jacques Humber', '201-20-35']\n",
+    "       ['Thérèse Guille', '201-20-38']\n",
+    "       ['Gilles Gros-Bodin', '201-20-39']\n",
+    "       ['Amélie Pires', '201-25-39']\n",
+    "       ['Marcel Laporte', '201-20-39']\n",
+    "       ['Geneviève Marchal', '301-20-39']\n",
+    " ])\n",
+    "\n",
+    "```\n",
+    "\n",
+    "2. Comptez maintenant le nombre du numéro comportant le nombre 30.\n",
+    "\n",
+    "Pour ce faire vous pouvez créer ce que l'on appelle un mask, c'est à dire parcourir le tableau et tester si le pattern \"30\" est présent dans la chaîne. Le mask devra avoir la même dimension que votre tableau. Une fois celui-ci en place vous pourrez alors l'appliquer de la manière suivante :\n",
+    "\n",
+    "```python\n",
+    "sanitize[mask]\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[['Luce du Coulon' '201-20-30']\n",
+      " ['Auguste Dupont' '201-22-30']\n",
+      " ['Roger Le Voisi' '201-27-30']\n",
+      " ['Alexandre Lacri' '201-10-30']\n",
+      " ['Jacques Humber' '201-20-35']\n",
+      " ['Thérèse Guille' '201-20-38']\n",
+      " ['Gilles Gros-Bodin' '201-20-39']\n",
+      " ['Amélie Pires' '201-25-39']\n",
+      " ['Marcel Laporte' '201-20-39']\n",
+      " ['Geneviève Marchal' '301-20-39']]\n"
+     ]
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "\n",
+    "students = np.array([\n",
+    "    [  \"Name: Luce du Coulon\" , \"phone Number: 201-20-30\"],\n",
+    "    [  \"Name: Auguste Dupont\", \"phone Number: 201-22-30\"],\n",
+    "    [  \"Name: Roger Le Voisi\", \"phone Number: 201-27-30\"],\n",
+    "    [  \"Name: Alexandre Lacri\", \"phone Number: 201-10-30\"],\n",
+    "    [  \"Name: Jacques Humber\", \"phone Number: 201-20-35\"],\n",
+    "    [  \"Name: Thérèse Guille\", \"phone Number: 201-20-38\"],\n",
+    "    [  \"Name: Gilles Gros-Bodin\", \"phone Number: 201-20-39\"],\n",
+    "    [  \"Name: Amélie Pires\", \"phone Number: 201-25-39\"],\n",
+    "    [  \"Name: Marcel Laporte\", \"phone Number: 201-20-39\"],\n",
+    "    [  \"Name: Geneviève Marchal\", \"phone Number: 301-20-39\"]\n",
+    "])\n",
+    "\n",
+    "l, c = students.shape\n",
+    "\n",
+    "pattern1 = \"Name:\"\n",
+    "pattern2 = \"phone Number:\"\n",
+    "\n",
+    "sanitize = np.empty((l, c), dtype='<U23')\n",
+    "\n",
+    "for i in range(l):\n",
+    "    for j in range(c):\n",
+    "        st = students[i,j]\n",
+    "        # dans le cas où on a pas de pattern à remplacer\n",
+    "        # on crée un pattern vide de recherche\n",
+    "        if pattern1 in st:\n",
+    "            p = pattern1\n",
+    "        elif pattern2 in st:\n",
+    "            p = pattern2\n",
+    "        else:\n",
+    "            p = \"\"\n",
+    "            \n",
+    "        sanitize[i, j] = st.replace(p, \"\").strip()\n",
+    "            \n",
+    "print(sanitize)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "2. Comptez maintenant le nombre du numéro comportant le nombre 30.\n",
+    "\n",
+    "Pour ce faire vous pouvez créer ce que l'on appelle un mask, c'est à dire parcourir le tableau et tester si le pattern \"30\" est présent dans la chaîne. Le mask devra avoir la même dimension que votre tableau. Une fois celui-ci en place vous pourrez alors l'appliquer de la manière suivante :\n",
+    "\n",
+    "```python\n",
+    "sanitize[mask]\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([['Luce du Coulon', '201-20-30'],\n",
+       "       ['Auguste Dupont', '201-22-30'],\n",
+       "       ['Roger Le Voisi', '201-27-30'],\n",
+       "       ['Alexandre Lacri', '201-10-30'],\n",
+       "       ['Jacques Humber', '201-20-35'],\n",
+       "       ['Thérèse Guille', '201-20-38'],\n",
+       "       ['Gilles Gros-Bodin', '201-20-39'],\n",
+       "       ['Amélie Pires', '201-25-39'],\n",
+       "       ['Marcel Laporte', '201-20-39'],\n",
+       "       ['Geneviève Marchal', '301-20-39']],\n",
+       "      dtype='<U23')"
+      ]
+     },
+     "execution_count": 42,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sanitize[]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Vous pouvez utiliser la fonction replace de Python pour remplacer un pattern dans une chaîne de caractères. La fonction strip() permet de supprimer les espaces avant et après dans la chaîne.\n",
+    "\n",
+    "```python\n",
+    "print( \"    Name: Luce du Coulon     \".replace(\"\", \"\").strip() )\n",
+    "# affiche Name: Luce du Coulon sans les espaces\n",
+    "\n",
+    "```\n",
+    "\n",
+    "Nous utilisons également dans le script ci-dessus l'opérateur Python \"in\" il permet ici de vérifier que le pattern est bien présent dans la chaîne de caractères :\n",
+    "\n",
+    "```python\n",
+    "\n",
+    "if \"Name:\" in \"Name: Luce du Coulon \":\n",
+    "    print(\"yes\")\n",
+    "\n",
+    "# affiche yes\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "On filtre maintenant avec un mask qui a la même dimension que le tableau students"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[False  True]\n",
+      " [False  True]\n",
+      " [False  True]\n",
+      " [False  True]\n",
+      " [False False]\n",
+      " [False False]\n",
+      " [False False]\n",
+      " [False False]\n",
+      " [False False]\n",
+      " [False False]]\n",
+      "['phone Number: 201-20-30' 'phone Number: 201-22-30'\n",
+      " 'phone Number: 201-27-30' 'phone Number: 201-10-30']\n"
+     ]
+    }
+   ],
+   "source": [
+    "mask = np.array( [ [ ('-30' in c or '30-' in c ) for c in l ] for l in students ] )\n",
+    "\n",
+    "print(mask)\n",
+    "\n",
+    "print(students[mask])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\n",
+    "\n",
+    "\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.5.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
